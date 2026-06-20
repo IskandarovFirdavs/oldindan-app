@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { useTheme } from '../context/ThemeContext';
-import { OTP_EXPIRY_SECONDS } from '../api/config';
+import React, { useEffect, useState } from "react";
+import { Text, TouchableOpacity, StyleSheet } from "react-native";
+import { useTheme } from "../context/ThemeContext";
+import { OTP_EXPIRY_SECONDS } from "../api/config";
 
 export default function OTPTimer({ onResend, resendLoading }) {
   const { theme } = useTheme();
@@ -28,17 +28,23 @@ export default function OTPTimer({ onResend, resendLoading }) {
       style={styles.wrap}
     >
       <Text style={[styles.text, { color: theme.colors.textSecondary }]}>
-        {canResend
-          ? resendLoading
-            ? 'Sending...'
-            : 'Did not receive code? Resend'
-          : `Resend code in ${mins}:${String(secs).padStart(2, '0')}`}
+        {canResend ? (
+          resendLoading ? (
+            "Sending..."
+          ) : (
+            <Text style={{ color: theme.colors.primary || "red" }}>
+              Did not receive code? Resend
+            </Text>
+          )
+        ) : (
+          `Resend code in ${mins}:${String(secs).padStart(2, "0")}`
+        )}
       </Text>
     </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
-  wrap: { alignItems: 'center', marginTop: 20 },
+  wrap: { alignItems: "center", marginTop: 20 },
   text: { fontSize: 14 },
 });

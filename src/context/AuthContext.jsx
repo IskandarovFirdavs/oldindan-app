@@ -1,15 +1,22 @@
-import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   clearTokens,
   getAccessToken,
   getProfile,
   loginConsumer,
   registerConsumer,
-} from '../api';
+} from "../api";
 
 const AuthContext = createContext(null);
-const USER_KEY = '@oldindan_user';
+const USER_KEY = "@oldindan_user";
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
@@ -44,8 +51,8 @@ export function AuthProvider({ children }) {
     bootstrap();
   }, [bootstrap]);
 
-  const login = async (phone, password) => {
-    const data = await loginConsumer(phone, password);
+  const login = async (phone_number, password) => {
+    const data = await loginConsumer(phone_number, password);
     await persistUser(data.user);
     return data;
   };
@@ -87,6 +94,6 @@ export function AuthProvider({ children }) {
 
 export function useAuth() {
   const ctx = useContext(AuthContext);
-  if (!ctx) throw new Error('useAuth must be used within AuthProvider');
+  if (!ctx) throw new Error("useAuth must be used within AuthProvider");
   return ctx;
 }
