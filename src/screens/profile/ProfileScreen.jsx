@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -7,20 +7,50 @@ import {
   TouchableOpacity,
   Image,
   Switch,
-} from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Ionicons } from '@expo/vector-icons';
-import { useTheme } from '../../context/ThemeContext';
-import { useAuth } from '../../context/AuthContext';
-import { BASE_URL } from '../../api/config';
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Ionicons } from "@expo/vector-icons";
+import { useTheme } from "../../context/ThemeContext";
+import { useAuth } from "../../context/AuthContext";
+import { BASE_URL } from "../../api/config";
 
 const MENU = [
-  { id: 'personal', icon: 'person-outline', label: 'Personal info', screen: 'PersonalInfo' },
-  { id: 'payment', icon: 'card-outline', label: 'Payment methods', screen: 'PaymentMethods' },
-  { id: 'history', icon: 'time-outline', label: 'Booking history', screen: 'BookingHistory' },
-  { id: 'invite', icon: 'gift-outline', label: 'Invite a friend', screen: 'InviteFriend' },
-  { id: 'support', icon: 'headset-outline', label: 'Support', screen: 'Support' },
-  { id: 'extra', icon: 'ellipsis-horizontal-circle-outline', label: 'Extra', screen: 'Extra' },
+  {
+    id: "personal",
+    icon: "person-outline",
+    label: "Personal info",
+    screen: "PersonalInfo",
+  },
+  {
+    id: "payment",
+    icon: "card-outline",
+    label: "Payment methods",
+    screen: "PaymentMethods",
+  },
+  {
+    id: "history",
+    icon: "time-outline",
+    label: "Booking history",
+    screen: "BookingHistory",
+  },
+  {
+    id: "invite",
+    icon: "gift-outline",
+    label: "Invite a friend",
+    screen: "InviteFriend",
+  },
+  {
+    id: "support",
+    icon: "headset-outline",
+    label: "Support",
+    screen: "Support",
+  },
+  {
+    id: "extra",
+    icon: "ellipsis-horizontal-circle-outline",
+    label: "Extra",
+    screen: "Extra",
+  },
 ];
 
 export default function ProfileScreen({ navigation }) {
@@ -28,65 +58,103 @@ export default function ProfileScreen({ navigation }) {
   const { user } = useAuth();
 
   const avatarUri = user?.avatar
-    ? user.avatar.startsWith('http')
+    ? user.avatar.startsWith("http")
       ? user.avatar
       : `${BASE_URL}${user.avatar}`
     : null;
 
   return (
-    <SafeAreaView style={[styles.safe, { backgroundColor: theme.colors.background }]} edges={['top']}>
+    <SafeAreaView
+      style={[styles.safe, { backgroundColor: theme.colors.background }]}
+      edges={["top"]}
+    >
       <ScrollView contentContainerStyle={styles.scroll}>
         <View style={styles.profileHeader}>
           {avatarUri ? (
             <Image source={{ uri: avatarUri }} style={styles.avatar} />
           ) : (
-            <View style={[styles.avatarPlaceholder, { backgroundColor: theme.colors.primary }]}>
+            <View
+              style={[
+                styles.avatarPlaceholder,
+                { backgroundColor: theme.colors.primary },
+              ]}
+            >
               <Text style={styles.avatarLetter}>
-                {(user?.first_name?.[0] || 'U').toUpperCase()}
+                {(user?.first_name?.[0] || "U").toUpperCase()}
               </Text>
             </View>
           )}
           <Text style={[styles.name, { color: theme.colors.text }]}>
-            {user?.full_name || `${user?.first_name || ''} ${user?.last_name || ''}`.trim() || 'Guest'}
+            {user?.full_name ||
+              `${user?.first_name || ""} ${user?.last_name || ""}`.trim() ||
+              "Guest"}
           </Text>
-          {user?.bio ? (
-            <Text style={[styles.bio, { color: theme.colors.textSecondary }]} numberOfLines={2}>
-              {user.bio}
-            </Text>
-          ) : null}
-          {user?.phone ? (
-            <Text style={[styles.phone, { color: theme.colors.textSecondary }]}>+{user.phone}</Text>
-          ) : null}
         </View>
 
-        <View style={[styles.themeRow, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }]}>
+        <View
+          style={[
+            styles.themeRow,
+            {
+              backgroundColor: theme.colors.card,
+              borderColor: theme.colors.border,
+            },
+          ]}
+        >
           <View style={styles.themeLeft}>
-            <Ionicons name={isDark ? 'moon' : 'sunny'} size={22} color={theme.colors.primary} />
+            <Ionicons
+              name={isDark ? "moon" : "sunny"}
+              size={22}
+              color={theme.colors.primary}
+            />
             <Text style={[styles.themeLabel, { color: theme.colors.text }]}>
-              {isDark ? 'Dark mode' : 'Light mode'}
+              {isDark ? "Dark mode" : "Light mode"}
             </Text>
           </View>
           <Switch
             value={isDark}
             onValueChange={toggleTheme}
-            trackColor={{ false: theme.colors.border, true: theme.colors.primary }}
+            trackColor={{
+              false: theme.colors.border,
+              true: theme.colors.primary,
+            }}
             thumbColor="#FFF"
           />
         </View>
 
-        <View style={[styles.menu, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }]}>
+        <View
+          style={[
+            styles.menu,
+            {
+              backgroundColor: theme.colors.card,
+              borderColor: theme.colors.border,
+            },
+          ]}
+        >
           {MENU.map((item, i) => (
             <TouchableOpacity
               key={item.id}
               style={[
                 styles.menuItem,
-                i < MENU.length - 1 && { borderBottomColor: theme.colors.border, borderBottomWidth: StyleSheet.hairlineWidth },
+                i < MENU.length - 1 && {
+                  borderBottomColor: theme.colors.border,
+                  borderBottomWidth: StyleSheet.hairlineWidth,
+                },
               ]}
               onPress={() => navigation.navigate(item.screen)}
             >
-              <Ionicons name={item.icon} size={22} color={theme.colors.primary} />
-              <Text style={[styles.menuLabel, { color: theme.colors.text }]}>{item.label}</Text>
-              <Ionicons name="chevron-forward" size={20} color={theme.colors.textSecondary} />
+              <Ionicons
+                name={item.icon}
+                size={22}
+                color={theme.colors.primary}
+              />
+              <Text style={[styles.menuLabel, { color: theme.colors.text }]}>
+                {item.label}
+              </Text>
+              <Ionicons
+                name="chevron-forward"
+                size={20}
+                color={theme.colors.textSecondary}
+              />
             </TouchableOpacity>
           ))}
         </View>
@@ -98,42 +166,46 @@ export default function ProfileScreen({ navigation }) {
 const styles = StyleSheet.create({
   safe: { flex: 1 },
   scroll: { paddingBottom: 32 },
-  profileHeader: { alignItems: 'center', paddingVertical: 28, paddingHorizontal: 24 },
+  profileHeader: {
+    alignItems: "center",
+    paddingVertical: 40,
+    paddingHorizontal: 24,
+  },
   avatar: { width: 96, height: 96, borderRadius: 48 },
   avatarPlaceholder: {
     width: 96,
     height: 96,
     borderRadius: 48,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
-  avatarLetter: { fontSize: 36, fontWeight: '800', color: '#FFF' },
-  name: { fontSize: 22, fontWeight: '800', marginTop: 14 },
-  bio: { fontSize: 14, marginTop: 6, textAlign: 'center', lineHeight: 20 },
+  avatarLetter: { fontSize: 36, fontWeight: "800", color: "#FFF" },
+  name: { fontSize: 22, fontWeight: "800", marginTop: 14 },
+  bio: { fontSize: 14, marginTop: 6, textAlign: "center", lineHeight: 20 },
   phone: { fontSize: 14, marginTop: 4 },
   themeRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     marginHorizontal: 16,
     marginBottom: 16,
     padding: 16,
     borderRadius: 14,
     borderWidth: 1,
   },
-  themeLeft: { flexDirection: 'row', alignItems: 'center', gap: 12 },
-  themeLabel: { fontSize: 16, fontWeight: '600' },
+  themeLeft: { flexDirection: "row", alignItems: "center", gap: 12 },
+  themeLabel: { fontSize: 16, fontWeight: "600" },
   menu: {
     marginHorizontal: 16,
     borderRadius: 14,
     borderWidth: 1,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   menuItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     padding: 16,
     gap: 14,
   },
-  menuLabel: { flex: 1, fontSize: 16, fontWeight: '500' },
+  menuLabel: { flex: 1, fontSize: 16, fontWeight: "500" },
 });

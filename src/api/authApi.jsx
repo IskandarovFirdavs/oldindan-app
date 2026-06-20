@@ -81,3 +81,19 @@ export async function verifyForgotPasswordOTP(phone, code) {
     auth: false,
   });
 }
+
+export async function requestEmailOTP(email) {
+  return apiRequest(`${base}/consumer/request-email-otp/`, {
+    method: "POST",
+    body: { email },
+    auth: false,
+  });
+}
+
+export async function verifyEmailOTP(email, code) {
+  return apiRequest(`${base}/consumer/verify-email-otp/`, {
+    method: "POST",
+    body: { email, code },
+    auth: false,
+  });
+}
