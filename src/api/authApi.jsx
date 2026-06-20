@@ -73,3 +73,11 @@ export async function verifyRegisterOTP(phone, code) {
     auth: false,
   });
 }
+
+export async function verifyForgotPasswordOTP(phone, code) {
+  return apiRequest(`${base}/consumer/verify-forgot-password-otp/`, {
+    method: "POST",
+    body: { phone, code },
+    auth: false,
+  });
+}

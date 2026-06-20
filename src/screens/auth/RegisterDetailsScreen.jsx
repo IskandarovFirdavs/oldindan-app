@@ -5,6 +5,7 @@ import {
   Platform,
   ScrollView,
   Text,
+  Alert,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ScreenHeader from "../../components/ScreenHeader";
@@ -14,7 +15,7 @@ import { useTheme } from "../../context/ThemeContext";
 import { useAuth } from "../../context/AuthContext";
 
 export default function RegisterDetailsScreen({ navigation, route }) {
-  const { phone, code } = route.params;
+  const { phone, code, otpExpiresAt } = route.params; // otpExpiresAt ni qo'shing
   const { theme } = useTheme();
   const { register } = useAuth();
   const [firstName, setFirstName] = useState("");
@@ -29,6 +30,22 @@ export default function RegisterDetailsScreen({ navigation, route }) {
   // Password match tekshirish
   const [isPasswordValid, setIsPasswordValid] = useState(false);
   const [doPasswordsMatch, setDoPasswordsMatch] = useState(false);
+
+  // OTP muddatini tekshirish
+  useEffect(() => {
+    if (otpExpiresAt && Date.now() > otpExpiresAt) {
+      Alert.alert(
+        "OTP Expired",
+        "Your OTP has expired. Please request a new code.",
+        [
+          {
+            text: "OK",
+            onPress: () => navigation.goBack(),
+          },
+        ],
+      );
+    }
+  }, []);
 
   useEffect(() => {
     setIsPasswordValid(password.length >= 8);

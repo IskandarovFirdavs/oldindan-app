@@ -1,10 +1,4 @@
-/**
- * Oldindan API configuration
- *
- * Change BASE_URL to your nginx / ngrok / production backend URL.
- * Example: https://your-domain.ngrok-free.app
- */
-export const BASE_URL = "https://d077-144-124-196-52.ngrok-free.app";
+export const BASE_URL = "https://821f-144-124-196-52.ngrok-free.app";
 
 export const API_PATHS = {
   accounts: "/api/accounts",

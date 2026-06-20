@@ -34,7 +34,13 @@ export default function RegisterOTPScreen({ navigation, route }) {
     setVerifying(true);
     try {
       await verifyRegisterOTP(phone, code);
-      navigation.navigate("RegisterDetails", { phone, code });
+      // OTP vaqtini qo'shib o'tkazish
+      const otpExpiresAt = Date.now() + 300000; // 5 daqiqa
+      navigation.navigate("RegisterDetails", {
+        phone,
+        code,
+        otpExpiresAt,
+      });
     } catch (e) {
       const msg = e.message || "Invalid code. Please try again.";
       setError(msg);
@@ -43,7 +49,10 @@ export default function RegisterOTPScreen({ navigation, route }) {
       if (
         msg.includes("tugadi") ||
         msg.includes("blocked") ||
-        msg.includes("attempts")
+        msg.includes("attempts") ||
+        msg.includes("ko'p") ||
+        msg.includes("urinish") ||
+        msg.includes("qoldi")
       ) {
         setIsBlocked(true);
       }
